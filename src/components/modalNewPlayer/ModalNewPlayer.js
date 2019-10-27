@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 const ModalNewPlayer = ({ showNewPlayerModal, handleHideModal, ahoraJuega }) => {
   return (
-    <Modal centered show={showNewPlayerModal} onHide={handleHideModal}>
+    <Modal centered show={showNewPlayerModal} onHide={() => { handleHideModal('showNewPlayerModal') }}>
       <Modal.Header style={{ height: '30vh', justifyContent: 'center' }}>
         <Modal.Title style={{ alignSelf: 'center', textAlign: 'center' }}>
           Le toca elegir a <br/>
@@ -11,7 +11,7 @@ const ModalNewPlayer = ({ showNewPlayerModal, handleHideModal, ahoraJuega }) => 
         </Modal.Title>
       </Modal.Header>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleHideModal}>
+        <Button variant="secondary" onClick={() => { handleHideModal('showNewPlayerModal') }}>
           OK
         </Button>
       </Modal.Footer>
@@ -20,5 +20,3 @@ const ModalNewPlayer = ({ showNewPlayerModal, handleHideModal, ahoraJuega }) => 
 }
 
 export default ModalNewPlayer;
-
-

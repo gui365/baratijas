@@ -11,6 +11,7 @@ import SideNav from './components/sideNav/SideNav';
 import MainContent from './components/mainContent/MainContent';
 import Header from './components/header/Header';
 import ModalNewPlayer from './components/modalNewPlayer/ModalNewPlayer';
+import ModalPrizeWon from './components/modalPrizeWon/ModalPrizeWon';
 
 // firebase.initializeApp({
 //   databaseURL: ''
@@ -22,8 +23,10 @@ class App extends React.Component {
     comenzoElJuego: false,
     vuelta: 0,
     premios: [],
+    premioElegido: '',
     ahoraJuega: '',
     showNewPlayerModal: false,
+    showPrizeWonModal: false,
     participantes: [
       {
         nombre: 'Lore',
@@ -126,15 +129,18 @@ class App extends React.Component {
       // 1. vuelta ++
       // 2. reset yaJugo property for all participants
 
-  handleHideModal = () => {
+  handleHideModal = (prop) => {
     this.setState({
-      showNewPlayerModal: false
+      [prop]: false
     })
   }
 
   elegirPremio = (premio) => {
-    alert(premio);
     // Open modal showing what was the prize won
+    this.setState({
+      premioElegido: premio,
+      showPrizeWonModal: true
+    })
     // Assign that prize to the list of prizes for that player
     // Flip the yaJugo flag to true
     // 
@@ -147,6 +153,11 @@ class App extends React.Component {
           showNewPlayerModal={this.state.showNewPlayerModal}
           handleHideModal={this.handleHideModal}
           ahoraJuega={this.state.ahoraJuega}
+        />
+        <ModalPrizeWon
+          showPrizeWonModal={this.state.showPrizeWonModal}
+          handleHideModal={this.handleHideModal}
+          premioElegido={this.state.premioElegido}
         />
         <Header
           vuelta={this.state.vuelta}
