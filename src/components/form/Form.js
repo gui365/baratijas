@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const StyledInput = styled('input')`
   border: none;
+  text-align: center;
 `;
 
 const StyledForm = styled('form')`
@@ -25,8 +26,8 @@ const Form = ({ agregar }) => {
 
   return (
     <StyledForm onSubmit={handleFormSubmit}>
-      <StyledInput placeholder='Nombre' name='nombre' onChange={handleChange} />
-      <Button type='submit' style={{ padding: '3px 8px' }} size='sm' variant='dark'>Agregar</Button>
+      <StyledInput placeholder='Nombre' name='nombre' onChange={handleChange} value={nombre}/>
+      <Button type='submit' style={{ padding: '1px 8px' }} size='sm' variant='dark'>Agregar</Button>
     </StyledForm>
   );
 }

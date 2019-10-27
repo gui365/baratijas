@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap';
 import styled from 'styled-components'
 import Form from '../form/Form';
 import ParticipantsTable from '../participantsTable/ParticipantsTable';
-import img from '../../images/stars01.jpg'
+// import img from '../../images/stars01.jpg'
 
 // background-image: url(${img});
 // background-size: cover;
@@ -18,18 +18,15 @@ const StyledH3 = styled('h3')`
   border-bottom: 1px solid #000;
 `;
 
-const SideNav = ({ participantes, agregar }) => {
+const SideNav = ({ comenzoElJuego, participantes, agregar, ahoraJuega }) => {
   return (
     <>
       <StyledCol lg='3'>
         <StyledH3>Participantes</StyledH3>
-        <Form agregar={agregar} />
-        <ParticipantsTable />
-      </StyledCol>
-      <StyledCol lg='3'>
-        {participantes.length !== 0 &&
-          participantes.map(participante => <p>{participante}</p>)
+        { !comenzoElJuego &&
+          <Form agregar={agregar} />
         }
+        <ParticipantsTable participantes={participantes} ahoraJuega={ahoraJuega} />
       </StyledCol>
     </>
   );
