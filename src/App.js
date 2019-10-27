@@ -5,10 +5,12 @@ import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Button } from 'react-bootstrap';
+import { listaDeBaratijas } from './data/baratijas';
 
 import SideNav from './components/sideNav/SideNav';
 import MainContent from './components/mainContent/MainContent';
 import Header from './components/header/Header';
+import ModalNewPlayer from './components/modalNewPlayer/ModalNewPlayer';
 
 // firebase.initializeApp({
 //   databaseURL: ''
@@ -19,7 +21,20 @@ class App extends React.Component {
   state = {
     comenzoElJuego: false,
     vuelta: 0,
+    premios: [],
+    ahoraJuega: '',
+    showNewPlayerModal: false,
     participantes: [
+      {
+        nombre: 'Lore',
+        premios: ['Un cactus'],
+        yaJugo: false
+      },
+      {
+        nombre: 'Mami',
+        premios: [],
+        yaJugo: false
+      },
       {
         nombre: 'Guille',
         premios: ['Un pulpo que baila flamenco', 'Una salchicha'],
@@ -28,11 +43,39 @@ class App extends React.Component {
       {
         nombre: 'Gaby',
         premios: ['Una birome'],
-        yaJugo: true
+        yaJugo: false
+      },
+      {
+        nombre: 'Matu',
+        premios: [],
+        yaJugo: false
       }
     ],
-    premios: [],
-    ahoraJuega: ''
+    participantesPorJugar: []
+  }
+
+  componentDidMount() {
+    let listaMezclada = this.shuffle([...listaDeBaratijas]);
+    listaMezclada = this.asignarIds(listaMezclada);
+    
+    this.setState({
+      premios: listaMezclada
+    })
+  }
+
+  asignarIds = (listaMezclada) => {
+    return listaMezclada.map((b, i) => {
+      b.id = (i + 1).toString();
+      return b;
+    })
+  }
+
+  shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
 
   agregarParticipante = (nombre) => {
@@ -56,25 +99,55 @@ class App extends React.Component {
     }
   }
 
-  comenzarElJuego = () => {
-    // mostrar lista de baratijas
-    if(this.state.participantes.length !== 0) {
-      this.setState({
-        comenzoElJuego: true
-      })
-    }
-    // elegir participante que empieza a jugar
+  comenzarNuevoTurno = () => {
+    const chosenPlayerIndex = Math.floor(Math.random() * this.state.participantes.length);
+    const array = !this.state.comenzoElJuego ? this.state.participantes : this.state.participantesPorJugar;
+    const filteredArray = this.filterOutPlayer(array, chosenPlayerIndex);
+    console.log(filteredArray);
 
+    if(this.state.participantes.length !== 0) {
+      const newState = {
+        comenzoElJuego: true,
+        ahoraJuega: array[chosenPlayerIndex].nombre,
+        showNewPlayerModal: true,
+        participantesPorJugar: filteredArray
+      }
+      this.setState(newState);
+    }
+  }
+
+  filterOutPlayer = (array, playerIndex) => {
+    const chosenPlayer = array[playerIndex];
+    return array.filter(p => !(p.nombre === chosenPlayer.nombre));
   }
   
   // elegir participante que no haya jugado en esta vuelta
-  // si todos jugaron en esta vuelta:
-    // 1. vuelta ++
-    // 2. reset yaJugo property for all participants
+    // si todos jugaron en esta vuelta:
+      // 1. vuelta ++
+      // 2. reset yaJugo property for all participants
+
+  handleHideModal = () => {
+    this.setState({
+      showNewPlayerModal: false
+    })
+  }
+
+  elegirPremio = (premio) => {
+    alert(premio);
+    // Open modal showing what was the prize won
+    // Assign that prize to the list of prizes for that player
+    // Flip the yaJugo flag to true
+    // 
+  }
 
   render() {
     return (
       <>
+        <ModalNewPlayer
+          showNewPlayerModal={this.state.showNewPlayerModal}
+          handleHideModal={this.handleHideModal}
+          ahoraJuega={this.state.ahoraJuega}
+        />
         <Header
           vuelta={this.state.vuelta}
           comenzoElJuego={this.state.comenzoElJuego}
@@ -87,12 +160,15 @@ class App extends React.Component {
             ahoraJuega={this.state.ahoraJuega}
           />
           { this.state.comenzoElJuego
-            ? <MainContent />
+            ? <MainContent
+                premios={this.state.premios}
+                elegirPremio={this.elegirPremio}
+              />
             : ( !this.state.comenzoElJuego &&
               <div style={{ position: 'relative' }}>
                 <Button
                     variant='danger'
-                    onClick={this.comenzarElJuego}
+                    onClick={this.comenzarNuevoTurno}
                     type='button'
                     size='lg'
                     className='mx-auto btn-comenzar'

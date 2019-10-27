@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
 
 const StyledTableData = styled('td')`
-  text-align: left;
   font-size: .8rem;
 `;
 

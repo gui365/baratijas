@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import styled from 'styled-components'
-import { listaDeBaratijas } from '../../data/baratijas';
 
 const StyledH3 = styled('h3')`
   font-size: 1.35rem;
@@ -20,17 +19,21 @@ const StyledButton = styled(Button)`
   box-shadow: 0 5px 5px grey;
 `;
 
-const MainContent = () => {
+const MainContent = ({ premios, elegirPremio }) => {
   return (
     <Col lg='9' style={{ paddingTop: '1rem' }}>
       <Row>
         <Col style={{ textAlign: 'center' }}>
           <StyledH3>Lista de Baratijas</StyledH3>
           {
-            listaDeBaratijas.map(baratija => {
+            premios.map(baratija => {
               return (
-                <StyledButton variant='success'>
-                  {parseInt(baratija.id)}
+                <StyledButton
+                  variant='success'
+                  onClick={() => { elegirPremio(baratija.description) }}
+                  key={`premio-${baratija.id}`}
+                >
+                    {baratija.id}
                 </StyledButton>
               )
             })
