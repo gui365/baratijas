@@ -19,30 +19,28 @@ const StyledButton = styled(Button)`
   box-shadow: 0 5px 5px grey;
 `;
 
-const MainContent = ({ premios, elegirPremio }) => {
+const MainContent = ({ premios, elegirPremio, mostrarListaPremios }) => {
   return (
-    <Col lg='9' style={{ paddingTop: '1rem' }}>
-      <Row>
-        <Col style={{ textAlign: 'center' }}>
-          <StyledH3>Lista de Baratijas</StyledH3>
-          {
-            premios.map(baratija => {
-              if(!baratija.picked) {
-                return (
-                  <StyledButton
-                    variant='success'
-                    onClick={() => { elegirPremio(baratija.description, parseInt(baratija.id) - 1) }}
-                    key={`premio-${baratija.id}`}
-                  >
-                      {baratija.id}
-                  </StyledButton>
-                )
-              }
-            })
-          }
-        </Col>
-      </Row>
-    </Col>
+    <Row>
+      <Col style={{ textAlign: 'center' }}>
+        <StyledH3>? ? ?</StyledH3>
+        {
+          premios.map(baratija => {
+            if(!baratija.picked) {
+              return (
+                <StyledButton
+                  variant='success'
+                  onClick={() => { elegirPremio(baratija.description, parseInt(baratija.id) - 1) }}
+                  key={`premio-${baratija.id}`}
+                >
+                    {baratija.id}
+                </StyledButton>
+              )
+            }
+          })
+        }
+      </Col>
+    </Row>
   );
 }
 

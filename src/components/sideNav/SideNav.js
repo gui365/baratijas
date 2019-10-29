@@ -11,6 +11,7 @@ const StyledCol = styled(Col)`
   background: #eee;
   padding: 1rem;
   text-align: center;
+  min-height: 90vh;
 `;
 
 const StyledH3 = styled('h3')`

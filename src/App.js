@@ -4,13 +4,15 @@ import React from 'react';
 import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import { listaDeBaratijas } from './data/baratijas';
 import { shuffle, asignarIds, filterOutPlayer } from './utils/utils';
 
 import SideNav from './components/sideNav/SideNav';
 import MainContent from './components/mainContent/MainContent';
 import Header from './components/header/Header';
+import Toggle from './components/toggle/Toggle';
+import ListaPremios from './components/listaPremios/ListaPremios';
 import ModalNewPlayer from './components/modalNewPlayer/ModalNewPlayer';
 import ModalPrizeWon from './components/modalPrizeWon/ModalPrizeWon';
 
@@ -30,7 +32,9 @@ class App extends React.Component {
     showNewPlayerModal: false,
     showPrizeWonModal: false,
     participantes: [],
-    participantesPorJugar: []
+    participantesPorJugar: [],
+    gameOver: false,
+    mostrarListaPremios: false
   }
 
   componentDidMount() {
@@ -60,6 +64,10 @@ class App extends React.Component {
       this.setState({
         participantes: newArray
       });
+    } else {
+      // var audio = new Audio('./assets/fart.mp3');
+      // audio.play();
+      alert('💩 Ese nombre ya fue ingresado 💩');
     }
   }
 
@@ -118,7 +126,9 @@ class App extends React.Component {
   
         this.setState(newState);
     } else {
-      console.log('all gone');
+      this.setState({
+        gameOver: true
+      });
     }
   }
 
@@ -157,9 +167,16 @@ class App extends React.Component {
     })
   }
 
+  showPrizes = () => {
+    console.log('show/hide')
+    this.setState({
+      mostrarListaPremios: !this.state.mostrarListaPremios
+    })
+  }
+
   render() {
     return (
-      <>
+      <Container fluid>
         { this.state.countdown < 11 && this.state.countdown > 0 &&
           <div id='countdown-div'>
             <p>El sorteo de las baratijas empieza en</p>
@@ -180,6 +197,7 @@ class App extends React.Component {
           vuelta={this.state.vuelta}
           comenzoElJuego={this.state.comenzoElJuego}
         />
+        <Toggle showPrizes={this.showPrizes} mostrarPremios={this.state.mostrarListaPremios} />
         <Row>
           <SideNav
             comenzar={this.comenzarJuego}
@@ -188,14 +206,25 @@ class App extends React.Component {
             agregar={this.agregarParticipante}
             ahoraJuega={this.state.ahoraJuega}
           />
-          { this.state.comenzoElJuego &&
-            <MainContent
-              premios={this.state.premios}
-              elegirPremio={this.elegirPremio}
-            />
-          } 
+          <Col lg={this.state.mostrarListaPremios ? 6 : 9} style={{ paddingTop: '1rem', textAlign: 'center' }}>
+            { this.state.comenzoElJuego && !this.state.gameOver &&
+              <MainContent
+                mostrarListaPremios={this.state.mostrarListaPremios}
+                premios={this.state.premios}
+                elegirPremio={this.elegirPremio}
+              />
+            }
+            {
+              this.state.gameOver &&
+              <p id='felicitaciones'>😊 ¡Felicitaciones a todos los ganadores! 👏</p>
+            }
+          </Col>
+          {
+            this.state.mostrarListaPremios &&
+            <ListaPremios premios={this.state.premios} />
+          }
         </Row>
-      </>
+      </Container>
     );
   }
 }

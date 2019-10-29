@@ -1,14 +1,18 @@
 export const listaDeBaratijas = [
   {
-    description: '1!',
+    description: 'Banana',
     picked: false
   },
   {
-    description: '2!',
+    description: 'Pear',
     picked: false
   },
   {
-    description: '',
+    description: 'Apple ⭐',
+    picked: false
+  },
+  {
+    description: 'Kiwi',
     picked: false
   }
 ]
