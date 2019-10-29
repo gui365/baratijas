@@ -13,6 +13,7 @@ const StyledForm = styled('form')`
 
 const Form = ({ agregar }) => {
   const [nombre, setNombre] = useState('');
+  const [invalid, setInvalid] = useState(false);
 
   const handleChange = (event) => {
     setNombre(event.target.value);
@@ -20,13 +21,22 @@ const Form = ({ agregar }) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    agregar(nombre.trim());
-    setNombre('');
+    
+    if(nombre === '') {
+      setInvalid(true);
+      setTimeout(() => {
+        setInvalid(false);
+      }, 500);
+      return;
+    } else {
+      agregar(nombre.trim());
+      setNombre('');
+    }
   }
 
   return (
     <StyledForm onSubmit={handleFormSubmit}>
-      <StyledInput placeholder='Nombre' name='nombre' onChange={handleChange} value={nombre}/>
+      <StyledInput placeholder={invalid ? '💩' : 'Nombre'} name='nombre' onChange={handleChange} value={nombre}/>
       <Button type='submit' style={{ padding: '1px 8px' }} size='sm' variant='dark'>Agregar</Button>
     </StyledForm>
   );

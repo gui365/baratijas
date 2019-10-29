@@ -7,8 +7,7 @@ const StyledTableData = styled('td')`
 `;
 
 const StyledTable = styled(Table)`
-  margin-top: 1.5rem;
-  margin-left: .5rem;
+  margin-top: 1rem;
 `;
 
 const ParticipantsTable = ({ participantes, ahoraJuega }) => {

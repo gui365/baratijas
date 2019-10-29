@@ -54,7 +54,7 @@ class App extends React.Component {
       }
     }
 
-    if(nombre !== '' && !exists) {
+    if(!exists) {
       const newArray = [...this.state.participantes];
       newArray.push({
         nombre,
@@ -65,9 +65,7 @@ class App extends React.Component {
         participantes: newArray
       });
     } else {
-      // var audio = new Audio('./assets/fart.mp3');
-      // audio.play();
-      alert('💩 Ese nombre ya fue ingresado 💩');
+      alert('💩 Ese nombre ya fue ingresado 🙄');
     }
   }
 
@@ -127,6 +125,7 @@ class App extends React.Component {
         this.setState(newState);
     } else {
       this.setState({
+        ahoraJuega: '',
         gameOver: true
       });
     }
@@ -152,7 +151,7 @@ class App extends React.Component {
     // Flip the yaJugo flag to true
     ganador.yaJugo = true;
     // Assign that prize to the list of prizes for that player
-    ganador.premios.push(premio);
+    ganador.premios.push(premio.description);
 
     // Remove picked prize from the list
     const nuevaListaPremios = [...this.state.premios];
@@ -168,7 +167,6 @@ class App extends React.Component {
   }
 
   showPrizes = () => {
-    console.log('show/hide')
     this.setState({
       mostrarListaPremios: !this.state.mostrarListaPremios
     })
@@ -189,6 +187,7 @@ class App extends React.Component {
           ahoraJuega={this.state.ahoraJuega}
         /> */}
         <ModalPrizeWon
+          ahoraJuega={this.state.ahoraJuega}
           showPrizeWonModal={this.state.showPrizeWonModal}
           handleHideModal={this.handleHideModal}
           premioElegido={this.state.premioElegido}
@@ -206,7 +205,7 @@ class App extends React.Component {
             agregar={this.agregarParticipante}
             ahoraJuega={this.state.ahoraJuega}
           />
-          <Col lg={this.state.mostrarListaPremios ? 6 : 9} style={{ paddingTop: '1rem', textAlign: 'center' }}>
+          <Col lg={this.state.mostrarListaPremios ? 7 : 9} style={{ paddingTop: '1rem', textAlign: 'center' }}>
             { this.state.comenzoElJuego && !this.state.gameOver &&
               <MainContent
                 mostrarListaPremios={this.state.mostrarListaPremios}

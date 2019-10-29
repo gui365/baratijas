@@ -3,15 +3,12 @@ import { Col, Button } from 'react-bootstrap';
 import styled from 'styled-components'
 import Form from '../form/Form';
 import ParticipantsTable from '../participantsTable/ParticipantsTable';
-// import img from '../../images/stars01.jpg'
 
-// background-image: url(${img});
-// background-size: cover;
 const StyledCol = styled(Col)`
   background: #eee;
-  padding: 1rem;
+  padding: .5rem;
   text-align: center;
-  min-height: 90vh;
+  min-height: 85vh;
 `;
 
 const StyledH3 = styled('h3')`
@@ -27,9 +24,7 @@ const SideNav = ({ comenzoElJuego, participantes, agregar, ahoraJuega, comenzar 
         { !comenzoElJuego &&
           <Form agregar={agregar} comenzar={comenzar} />
         }
-        <ParticipantsTable participantes={participantes} ahoraJuega={ahoraJuega} />
         { !comenzoElJuego && participantes.length !== 0 &&
-          <div style={{ position: 'relative' }}>
           <Button
               variant='danger'
               onClick={comenzar}
@@ -38,8 +33,8 @@ const SideNav = ({ comenzoElJuego, participantes, agregar, ahoraJuega, comenzar 
           >      
             Comenzar Juego
           </Button>
-        </div>
         }
+        <ParticipantsTable participantes={participantes} ahoraJuega={ahoraJuega} />
       </StyledCol>
     </>
   );

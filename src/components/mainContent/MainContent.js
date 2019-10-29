@@ -30,7 +30,7 @@ const MainContent = ({ premios, elegirPremio, mostrarListaPremios }) => {
               return (
                 <StyledButton
                   variant='success'
-                  onClick={() => { elegirPremio(baratija.description, parseInt(baratija.id) - 1) }}
+                  onClick={() => { elegirPremio(baratija, parseInt(baratija.id) - 1) }}
                   key={`premio-${baratija.id}`}
                 >
                     {baratija.id}
