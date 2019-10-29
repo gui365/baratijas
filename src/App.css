@@ -20,10 +20,35 @@ h3 {
   animation-name: example;
   animation-duration: 2s;
   animation-iteration-count: infinite;
+  margin-left: .5rem;
+  width: 100%;
 }
 
 @keyframes example {
   0% {background-color: rgb(139, 22, 34);}
   50% {background-color: #dc3545;}
   100% {background-color: rgb(139, 22, 34);}
+}
+
+#countdown-div {
+  z-index: 99;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 8vh;  
+  font-family: 'Rubik', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  margin: 0;
+}
+
+#countdown {
+  font-size: 50vh;
 }

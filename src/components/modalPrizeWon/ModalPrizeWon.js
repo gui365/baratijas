@@ -6,7 +6,10 @@ const ModalPrizeWon = ({ showPrizeWonModal, handleHideModal, premioElegido }) =>
     <Modal centered show={showPrizeWonModal} onHide={() => { handleHideModal('showPrizeWonModal') }}>
       <Modal.Header style={{ height: '30vh', justifyContent: 'center' }}>
         <Modal.Title style={{ alignSelf: 'center', textAlign: 'center' }}>
-          {premioElegido}
+          Felicitaciones! Te ganaste: <br/>
+          <strong style={{ fontSize: '2.25rem' }}>
+            {premioElegido}
+          </strong>
         </Modal.Title>
       </Modal.Header>
       <Modal.Footer>

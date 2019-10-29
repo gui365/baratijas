@@ -1,102 +1,14 @@
 export const listaDeBaratijas = [
   {
     description: '1!',
-    owner: null
+    picked: false
   },
   {
     description: '2!',
-    owner: null
+    picked: false
   },
   {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
-  },
-  {
-    description: 'Una tortuga ninja!',
-    owner: null
+    description: '',
+    picked: false
   }
 ]

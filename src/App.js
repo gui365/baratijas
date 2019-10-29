@@ -4,8 +4,9 @@ import React from 'react';
 import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Row, Button } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { listaDeBaratijas } from './data/baratijas';
+import { shuffle, asignarIds, filterOutPlayer } from './utils/utils';
 
 import SideNav from './components/sideNav/SideNav';
 import MainContent from './components/mainContent/MainContent';
@@ -20,6 +21,7 @@ import ModalPrizeWon from './components/modalPrizeWon/ModalPrizeWon';
 class App extends React.Component {
 
   state = {
+    countdown: 11,
     comenzoElJuego: false,
     vuelta: 0,
     premios: [],
@@ -27,58 +29,17 @@ class App extends React.Component {
     ahoraJuega: '',
     showNewPlayerModal: false,
     showPrizeWonModal: false,
-    participantes: [
-      {
-        nombre: 'Lore',
-        premios: ['Un cactus'],
-        yaJugo: false
-      },
-      {
-        nombre: 'Mami',
-        premios: [],
-        yaJugo: false
-      },
-      {
-        nombre: 'Guille',
-        premios: ['Un pulpo que baila flamenco', 'Una salchicha'],
-        yaJugo: false
-      },
-      {
-        nombre: 'Gaby',
-        premios: ['Una birome'],
-        yaJugo: false
-      },
-      {
-        nombre: 'Matu',
-        premios: [],
-        yaJugo: false
-      }
-    ],
+    participantes: [],
     participantesPorJugar: []
   }
 
   componentDidMount() {
-    let listaMezclada = this.shuffle([...listaDeBaratijas]);
-    listaMezclada = this.asignarIds(listaMezclada);
+    let listaMezclada = shuffle([...listaDeBaratijas]);
+    listaMezclada = asignarIds(listaMezclada);
     
     this.setState({
       premios: listaMezclada
     })
-  }
-
-  asignarIds = (listaMezclada) => {
-    return listaMezclada.map((b, i) => {
-      b.id = (i + 1).toString();
-      return b;
-    })
-  }
-
-  shuffle = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
   }
 
   agregarParticipante = (nombre) => {
@@ -102,58 +63,114 @@ class App extends React.Component {
     }
   }
 
-  comenzarNuevoTurno = () => {
-    const chosenPlayerIndex = Math.floor(Math.random() * this.state.participantes.length);
-    const array = !this.state.comenzoElJuego ? this.state.participantes : this.state.participantesPorJugar;
-    const filteredArray = this.filterOutPlayer(array, chosenPlayerIndex);
-    console.log(filteredArray);
-
+  comenzarJuego = () => {
+    let interval;
     if(this.state.participantes.length !== 0) {
-      const newState = {
-        comenzoElJuego: true,
-        ahoraJuega: array[chosenPlayerIndex].nombre,
-        showNewPlayerModal: true,
-        participantesPorJugar: filteredArray
-      }
-      this.setState(newState);
+      interval = setInterval(() => {
+        this.setState({
+          countdown: this.state.countdown - 1
+        })
+        if(this.state.countdown === 0) {
+          clearInterval(interval);
+          this.setState({
+            comenzoElJuego: true,
+            participantesPorJugar: [...this.state.participantes]
+          })
+          setTimeout(() => {
+            this.comenzarNuevoTurno();        
+          }, 0);
+        }
+      }, 1000);
     }
   }
 
-  filterOutPlayer = (array, playerIndex) => {
-    const chosenPlayer = array[playerIndex];
-    return array.filter(p => !(p.nombre === chosenPlayer.nombre));
-  }
+  comenzarNuevoTurno = () => {
+    const allPrizesGone = this.state.premios.reduce((c, p) => {
+      return {
+        picked: c.picked && p.picked
+      };
+    });
+    if(!allPrizesGone.picked) {
+      // Choose a random player from the list
+      const playersList = this.state.participantesPorJugar.length !== 0 ? this.state.participantesPorJugar : [...this.state.participantes];
+      const index = Math.floor(Math.random() * playersList.length);
+      const filteredArray = filterOutPlayer(playersList, index);
+      let newState = {};
+        
+        if(this.state.participantesPorJugar.length !== 0) {
+          // No todos los participantes jugaron en esta vuelta
+          newState = {...{
+            ahoraJuega: playersList[index].nombre,
+            showNewPlayerModal: true,
+            participantesPorJugar: filteredArray
+          }}
+          
+        } else {
+          // Todos los participantes jugaron en esta vuelta
+          playersList.forEach(obj => obj.yaJugo = false);
+          newState = {...{
+            vuelta: this.state.vuelta + 1,
+            ahoraJuega: playersList[index].nombre,
+            showNewPlayerModal: true,
+            participantesPorJugar: filteredArray
+          }}
+        }
   
-  // elegir participante que no haya jugado en esta vuelta
-    // si todos jugaron en esta vuelta:
-      // 1. vuelta ++
-      // 2. reset yaJugo property for all participants
+        this.setState(newState);
+    } else {
+      console.log('all gone');
+    }
+  }
 
   handleHideModal = (prop) => {
     this.setState({
       [prop]: false
     })
+
+    if(prop === 'showPrizeWonModal') {
+      this.comenzarNuevoTurno();
+    }
   }
 
-  elegirPremio = (premio) => {
-    // Open modal showing what was the prize won
+  elegirPremio = (premio, premioIndex) => {
+    const copyOfArray = [...this.state.participantes];
+    
+    const ganador = copyOfArray.find((obj) => {
+      return obj.nombre === this.state.ahoraJuega;
+    });
+
+    // Flip the yaJugo flag to true
+    ganador.yaJugo = true;
+    // Assign that prize to the list of prizes for that player
+    ganador.premios.push(premio);
+
+    // Remove picked prize from the list
+    const nuevaListaPremios = [...this.state.premios];
+    nuevaListaPremios[premioIndex].picked = true;
+
     this.setState({
       premioElegido: premio,
-      showPrizeWonModal: true
+      // Open modal showing what was the prize won
+      showPrizeWonModal: true,
+      participantes: copyOfArray,
+      premios: nuevaListaPremios
     })
-    // Assign that prize to the list of prizes for that player
-    // Flip the yaJugo flag to true
-    // 
   }
 
   render() {
     return (
       <>
-        <ModalNewPlayer
+        { this.state.countdown < 11 && this.state.countdown > 0 &&
+          <div id='countdown-div'>
+            <p>El sorteo de las baratijas empieza en</p>
+            <p id='countdown'>{this.state.countdown}</p>
+          </div>
+        }
+        {/* <ModalNewPlayer
           showNewPlayerModal={this.state.showNewPlayerModal}
           handleHideModal={this.handleHideModal}
           ahoraJuega={this.state.ahoraJuega}
-        />
+        /> */}
         <ModalPrizeWon
           showPrizeWonModal={this.state.showPrizeWonModal}
           handleHideModal={this.handleHideModal}
@@ -165,29 +182,17 @@ class App extends React.Component {
         />
         <Row>
           <SideNav
+            comenzar={this.comenzarJuego}
             comenzoElJuego={this.state.comenzoElJuego}
             participantes={this.state.participantes}
             agregar={this.agregarParticipante}
             ahoraJuega={this.state.ahoraJuega}
           />
-          { this.state.comenzoElJuego
-            ? <MainContent
-                premios={this.state.premios}
-                elegirPremio={this.elegirPremio}
-              />
-            : ( !this.state.comenzoElJuego &&
-              <div style={{ position: 'relative' }}>
-                <Button
-                    variant='danger'
-                    onClick={this.comenzarNuevoTurno}
-                    type='button'
-                    size='lg'
-                    className='mx-auto btn-comenzar'
-                    style={{ width: '300px', position: 'absolute', top: '3rem', left: '25vw' }}>
-                  Comenzar Juego
-                </Button>
-              </div>
-            )
+          { this.state.comenzoElJuego &&
+            <MainContent
+              premios={this.state.premios}
+              elegirPremio={this.elegirPremio}
+            />
           } 
         </Row>
       </>

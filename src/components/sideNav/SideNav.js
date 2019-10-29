@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col } from 'react-bootstrap';
+import { Col, Button } from 'react-bootstrap';
 import styled from 'styled-components'
 import Form from '../form/Form';
 import ParticipantsTable from '../participantsTable/ParticipantsTable';
@@ -18,18 +18,29 @@ const StyledH3 = styled('h3')`
   border-bottom: 1px solid #000;
 `;
 
-const SideNav = ({ comenzoElJuego, participantes, agregar, ahoraJuega }) => {
+const SideNav = ({ comenzoElJuego, participantes, agregar, ahoraJuega, comenzar }) => {
   return (
     <>
       <StyledCol lg='3'>
         <StyledH3>Participantes</StyledH3>
         { !comenzoElJuego &&
-          <Form agregar={agregar} />
+          <Form agregar={agregar} comenzar={comenzar} />
         }
         <ParticipantsTable participantes={participantes} ahoraJuega={ahoraJuega} />
+        { !comenzoElJuego && participantes.length !== 0 &&
+          <div style={{ position: 'relative' }}>
+          <Button
+              variant='danger'
+              onClick={comenzar}
+              type='button'
+              className='btn-comenzar'
+          >      
+            Comenzar Juego
+          </Button>
+        </div>
+        }
       </StyledCol>
     </>
   );
 }
-
 export default SideNav;

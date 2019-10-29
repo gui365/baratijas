@@ -27,15 +27,17 @@ const MainContent = ({ premios, elegirPremio }) => {
           <StyledH3>Lista de Baratijas</StyledH3>
           {
             premios.map(baratija => {
-              return (
-                <StyledButton
-                  variant='success'
-                  onClick={() => { elegirPremio(baratija.description) }}
-                  key={`premio-${baratija.id}`}
-                >
-                    {baratija.id}
-                </StyledButton>
-              )
+              if(!baratija.picked) {
+                return (
+                  <StyledButton
+                    variant='success'
+                    onClick={() => { elegirPremio(baratija.description, parseInt(baratija.id) - 1) }}
+                    key={`premio-${baratija.id}`}
+                  >
+                      {baratija.id}
+                  </StyledButton>
+                )
+              }
             })
           }
         </Col>
