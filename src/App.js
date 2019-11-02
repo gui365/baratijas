@@ -69,7 +69,16 @@ class App extends React.Component {
     }
   }
 
+  hideShowPrizes = (e) => {
+    if(e.code === 'KeyH') {
+      this.setState({
+        mostrarListaPremios: !this.state.mostrarListaPremios
+      })
+    }
+  }
+
   comenzarJuego = () => {
+    window.addEventListener('keyup', this.hideShowPrizes);
     let interval;
     if(this.state.participantes.length !== 0) {
       interval = setInterval(() => {
