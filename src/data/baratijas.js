@@ -1,6 +1,6 @@
 export const listaDeBaratijas = [
   {
-    description: 'Banana',
+    description: 'Porsche',
     picked: false,
     majorPrize: true
   },
@@ -15,8 +15,18 @@ export const listaDeBaratijas = [
     majorPrize: false
   },
   {
-    description: 'Kiwi',
+    description: 'Ferrari',
     picked: false,
     majorPrize: true
+  },
+  {
+    description: 'Cake',
+    picked: false,
+    majorPrize: false
+  },
+  {
+    description: 'Chips & Salsa',
+    picked: false,
+    majorPrize: false
   }
 ]
