@@ -1,6 +1,4 @@
 import React from 'react';
-// import firebase from 'firebase'
-// import { connect } from 'react-firebase'
 import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,25 +14,35 @@ import ListaPremios from './components/listaPremios/ListaPremios';
 import ModalNewPlayer from './components/modalNewPlayer/ModalNewPlayer';
 import ModalPrizeWon from './components/modalPrizeWon/ModalPrizeWon';
 
-// firebase.initializeApp({
-//   databaseURL: ''
-// });
-
 class App extends React.Component {
 
   state = {
     countdown: 11,
-    comenzoElJuego: false,
+    // comenzoElJuego: false,
+    comenzoElJuego: true,
     vuelta: 0,
     premios: [],
     premioElegido: '',
-    ahoraJuega: '',
+    // ahoraJuega: '',
+    ahoraJuega: 'Guille',
     showNewPlayerModal: false,
     showPrizeWonModal: false,
-    participantes: [],
-    participantesPorJugar: [],
+    participantes: [
+      {
+        nombre: 'Guille',
+        premios: [],
+        yaJugo: false
+      }
+    ],
+    participantesPorJugar: [
+      {
+        nombre: 'Guille',
+        premios: [],
+        yaJugo: false
+      }
+    ],
     gameOver: false,
-    mostrarListaPremios: false
+    mostrarListaPremios: true
   }
 
   componentDidMount() {
@@ -183,7 +191,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Container fluid>
+      <Container style={{ minWidth: '100%' }}>
         { this.state.countdown < 11 && this.state.countdown > 0 &&
           <div id='countdown-div'>
             <p>El sorteo de las baratijas empieza en</p>
@@ -205,7 +213,9 @@ class App extends React.Component {
           vuelta={this.state.vuelta}
           comenzoElJuego={this.state.comenzoElJuego}
         />
-        <Toggle showPrizes={this.showPrizes} mostrarPremios={this.state.mostrarListaPremios} />
+        { this.state.comenzoElJuego &&
+          <Toggle showPrizes={this.showPrizes} mostrarPremios={this.state.mostrarListaPremios} />
+        }
         <Row>
           <SideNav
             comenzar={this.comenzarJuego}
@@ -214,10 +224,9 @@ class App extends React.Component {
             agregar={this.agregarParticipante}
             ahoraJuega={this.state.ahoraJuega}
           />
-          <Col lg={this.state.mostrarListaPremios ? 7 : 9} style={{ paddingTop: '1rem', textAlign: 'center' }}>
+          <Col lg={this.state.mostrarListaPremios ? 7 : 9} style={{ paddingTop: '.5rem', textAlign: 'center' }}>
             { this.state.comenzoElJuego && !this.state.gameOver &&
               <MainContent
-                mostrarListaPremios={this.state.mostrarListaPremios}
                 premios={this.state.premios}
                 elegirPremio={this.elegirPremio}
               />

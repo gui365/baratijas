@@ -5,7 +5,6 @@ import Form from '../form/Form';
 import ParticipantsTable from '../participantsTable/ParticipantsTable';
 
 const StyledCol = styled(Col)`
-  background: #eee;
   padding: .5rem;
   text-align: center;
   min-height: 85vh;
@@ -20,7 +19,7 @@ const SideNav = ({ comenzoElJuego, participantes, agregar, ahoraJuega, comenzar 
   return (
     <>
       <StyledCol lg='3'>
-        <StyledH3>Participantes</StyledH3>
+        <StyledH3 className='section-title'>Participantes</StyledH3>
         { !comenzoElJuego &&
           <Form agregar={agregar} comenzar={comenzar} />
         }

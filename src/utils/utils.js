@@ -1,5 +1,16 @@
 // ARRAYS
-export const orden = ['Primera', 'Segunda', 'Tercera', 'Cuarta', 'Quinta', 'Sexta'];
+export const orden = [
+  'Primera',
+  'Segunda',
+  'Tercera',
+  'Cuarta',
+  'Quinta',
+  'Sexta',
+  'Septima',
+  'Octava',
+  'Novena',
+  'Decima'
+];
 
 // FUNCTIONS
 export const shuffle = (a) => {

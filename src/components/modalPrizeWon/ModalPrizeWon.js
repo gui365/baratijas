@@ -11,7 +11,7 @@ const ModalPrizeWon = ({ showPrizeWonModal, handleHideModal, premioElegido }) =>
             <div class="before"></div>
             <div class="after"></div>
           </div>
-          <span id='medal-icon'>🏅</span>
+          <span role='img' aria-label='medal emoji' id='medal-icon'>🏅</span>
         </>
       }
       <Modal.Header style={{ height: '30vh', justifyContent: 'center' }}>

@@ -37,7 +37,7 @@ const Form = ({ agregar }) => {
   return (
     <StyledForm onSubmit={handleFormSubmit}>
       <StyledInput placeholder={invalid ? '💩' : 'Nombre'} name='nombre' onChange={handleChange} value={nombre}/>
-      <Button type='submit' style={{ padding: '1px 8px' }} size='sm' variant='dark'>Agregar</Button>
+      <Button type='submit' style={{ padding: '1px 8px' }} size='sm' variant='dark'>+</Button>
     </StyledForm>
   );
 }
