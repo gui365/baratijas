@@ -1,12 +1,13 @@
 import React from 'react';
 import { Col, Table } from 'react-bootstrap';
 import styled from 'styled-components';
-import './ListaPremios.scss';
+import './PrizeList.scss';
 
 const StyledCol = styled(Col)`
   padding: .5rem;
   text-align: center;
-`;
+  `;
+  // background-color: rgba(0, 0, 0, 0.1);
 
 // const StyledTableData = styled('td')`
 //   font-size: .8rem;
@@ -32,18 +33,15 @@ const StyledDiv = styled('div')`
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid black;
-  .prize {
-    font-size: .8rem;
-  }
 `;
 
-const ListaPremios = ({ premios }) => {
+const PrizeList = ({ premios }) => {
   const sortedPremios = [...premios].sort((a, b) => (a.description > b.description) ? 1 : -1);
   const unpickedPrizes = [...premios].filter(premio => !premio.picked);
   const unpickedMajorPrizes = [...premios].filter(premio => !premio.picked && premio.majorPrize);
   
   return (
-    <StyledCol lg='2' id='col-listapremios'>
+    <StyledCol lg='2' id='col-prizelist'>
       <StyledH3 className='section-title'>Lista de Baratijas</StyledH3>
       <p>Quedan</p>
       <span className='emoji' role='img' aria-label='prize emoji'>🎁 {unpickedPrizes.length}</span>
@@ -51,9 +49,9 @@ const ListaPremios = ({ premios }) => {
       
       <StyledDiv>
           { sortedPremios.map(p => {
-            const prizeStyle = p.picked ? { textDecoration: 'line-through', color: '#bbb'} : {};
+            const prizeStyle = p.picked ? { opacity: 0.3 } : {};
             return (            
-              <span className='prize' style={{ margin: '.35rem .5rem', ...prizeStyle }} key={`table-${p.id}`}>
+              <span className='prize' style={{ fontFamily: 'Gochi Hand', margin: '.35rem .5rem', ...prizeStyle }} key={`table-${p.id}`}>
                 {p.description}
                 {p.majorPrize && <span role='img' aria-label='start emoji' style={{ fontSize: '.6rem' }}>⭐</span>}
               </span>
@@ -79,4 +77,4 @@ const ListaPremios = ({ premios }) => {
   );
 }
 
-export default ListaPremios;
+export default PrizeList;

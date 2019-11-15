@@ -8,32 +8,33 @@ const StyledCol = styled(Col)`
   padding: .5rem;
   text-align: center;
   min-height: 85vh;
-`;
+  `;
+  // background-color: rgba(0, 0, 0, 0.1);
 
 const StyledH3 = styled('h3')`
   font-size: 1.35rem;
   border-bottom: 1px solid #000;
 `;
 
-const SideNav = ({ comenzoElJuego, participantes, agregar, ahoraJuega, comenzar }) => {
+const SideNav = ({ hasGameStarted, participantes, agregar, ahoraJuega, comenzar, gameOver }) => {
   return (
     <>
-      <StyledCol lg='3'>
+      <StyledCol lg='2'>
         <StyledH3 className='section-title'>Participantes</StyledH3>
-        { !comenzoElJuego &&
+        { !hasGameStarted &&
           <Form agregar={agregar} comenzar={comenzar} />
         }
-        { !comenzoElJuego && participantes.length !== 0 &&
+        { !hasGameStarted && participantes.length !== 0 &&
           <Button
               variant='danger'
               onClick={comenzar}
               type='button'
               className='btn-comenzar'
           >      
-            Comenzar Juego
+            COMENZAR SORTEO
           </Button>
         }
-        <ParticipantsTable participantes={participantes} ahoraJuega={ahoraJuega} />
+        <ParticipantsTable gameOver={gameOver} participantes={participantes} ahoraJuega={ahoraJuega} />
       </StyledCol>
     </>
   );

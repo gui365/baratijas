@@ -1,76 +1,26 @@
 export const listaDeBaratijas = [
   {
-    description: 'Porsche',
-    picked: false,
-    majorPrize: true
-  },
-  {
-    description: 'Pear',
+    description: 'Gomas de borrar',
     picked: false,
     majorPrize: false
   },
   {
-    description: 'Apple',
+    description: 'Flotador para bebidas',
     picked: false,
     majorPrize: false
   },
   {
-    description: 'Ferrari',
-    picked: false,
-    majorPrize: true
-  },
-  {
-    description: 'Cake',
+    description: 'Lapices',
     picked: false,
     majorPrize: false
   },
   {
-    description: 'Porsche',
-    picked: false,
-    majorPrize: true
-  },
-  {
-    description: 'Pear',
+    description: 'Un tomate',
     picked: false,
     majorPrize: false
   },
   {
-    description: 'Apple',
-    picked: false,
-    majorPrize: false
-  },
-  {
-    description: 'Ferrari',
-    picked: false,
-    majorPrize: true
-  },
-  {
-    description: 'Cake',
-    picked: false,
-    majorPrize: false
-  },
-  {
-    description: 'Porsche',
-    picked: false,
-    majorPrize: true
-  },
-  {
-    description: 'Pear',
-    picked: false,
-    majorPrize: false
-  },
-  {
-    description: 'Apple',
-    picked: false,
-    majorPrize: false
-  },
-  {
-    description: 'Ferrari',
-    picked: false,
-    majorPrize: true
-  },
-  {
-    description: 'Cake',
+    description: 'Un diario viejo',
     picked: false,
     majorPrize: false
   },

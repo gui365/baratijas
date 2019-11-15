@@ -5,6 +5,12 @@ import styled from 'styled-components';
 const StyledInput = styled('input')`
   border: none;
   text-align: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  ::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+    opacity: 1;
+  }
+  width: 70%;
 `;
 
 const StyledForm = styled('form')`
@@ -12,31 +18,31 @@ const StyledForm = styled('form')`
 `;
 
 const Form = ({ agregar }) => {
-  const [nombre, setNombre] = useState('');
+  const [name, setName] = useState('');
   const [invalid, setInvalid] = useState(false);
 
   const handleChange = (event) => {
-    setNombre(event.target.value);
+    setName(event.target.value);
   }
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
     
-    if(nombre === '') {
+    if(name === '') {
       setInvalid(true);
       setTimeout(() => {
         setInvalid(false);
       }, 500);
       return;
     } else {
-      agregar(nombre.trim());
-      setNombre('');
+      agregar(name.trim());
+      setName('');
     }
   }
 
   return (
     <StyledForm onSubmit={handleFormSubmit}>
-      <StyledInput placeholder={invalid ? '💩' : 'Nombre'} name='nombre' onChange={handleChange} value={nombre}/>
+      <StyledInput placeholder={invalid ? '💩' : 'Nombre'} name='name' onChange={handleChange} value={name}/>
       <Button type='submit' style={{ padding: '1px 8px' }} size='sm' variant='dark'>+</Button>
     </StyledForm>
   );

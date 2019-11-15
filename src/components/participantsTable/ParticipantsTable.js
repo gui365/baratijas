@@ -8,9 +8,19 @@ const StyledTableData = styled('td')`
 
 const StyledTable = styled(Table)`
   margin-top: 1rem;
+  border: none !important;
+
+  td {
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, .3) !important;
+  }
+  th {
+    border: none;
+    border-bottom: 2px solid #000 !important;
+  }
 `;
 
-const ParticipantsTable = ({ participantes, ahoraJuega }) => {
+const ParticipantsTable = ({ participantes, ahoraJuega, gameOver }) => {
   return (
     <StyledTable striped hover size='sm'>
       { participantes.length !== 0 &&
@@ -23,14 +33,14 @@ const ParticipantsTable = ({ participantes, ahoraJuega }) => {
           </thead>
           <tbody>
             { participantes.map(participante => {
-              const stylingPlayingNow = ahoraJuega === participante.nombre ? { background: 'green', color: 'white' } : {};
+              const stylingPlayingNow = ahoraJuega === participante.name ? { background: 'rgba(0, 255, 115, 0.3)', color: 'white' } : {};
               const stylingAlreadyPlayed = {
-                color: participante.yaJugo ? '#ccc' : '#000',
+                opacity: gameOver ? 1 : participante.hasPlayed ? .3 : 1,
               }
               return (            
-                <tr style={{...stylingAlreadyPlayed, ...stylingPlayingNow}} key={`table-${participante.nombre}`}>
+                <tr style={{...stylingAlreadyPlayed, ...stylingPlayingNow}} key={`table-${participante.name}`}>
                   <td>
-                    {participante.nombre}
+                    {participante.name}
                   </td>
                   <StyledTableData>
                     {participante.premios.join(' | ')}

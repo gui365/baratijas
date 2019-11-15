@@ -10,7 +10,7 @@ import SideNav from './components/sideNav/SideNav';
 import MainContent from './components/mainContent/MainContent';
 import Header from './components/header/Header';
 import Toggle from './components/toggle/Toggle';
-import ListaPremios from './components/listaPremios/ListaPremios';
+import PrizeList from './components/prizeList/PrizeList';
 import ModalNewPlayer from './components/modalNewPlayer/ModalNewPlayer';
 import ModalPrizeWon from './components/modalPrizeWon/ModalPrizeWon';
 
@@ -18,31 +18,17 @@ class App extends React.Component {
 
   state = {
     countdown: 11,
-    // comenzoElJuego: false,
-    comenzoElJuego: true,
-    vuelta: 0,
+    hasGameStarted: false,
+    round: 0,
     premios: [],
-    premioElegido: '',
-    // ahoraJuega: '',
-    ahoraJuega: 'Guille',
+    chosenPrize: '',
+    ahoraJuega: '',
     showNewPlayerModal: false,
     showPrizeWonModal: false,
-    participantes: [
-      {
-        nombre: 'Guille',
-        premios: [],
-        yaJugo: false
-      }
-    ],
-    participantesPorJugar: [
-      {
-        nombre: 'Guille',
-        premios: [],
-        yaJugo: false
-      }
-    ],
+    participantes: [],
+    participantesPorJugar: [],
     gameOver: false,
-    mostrarListaPremios: true
+    mostrarListaPremios: false
   }
 
   componentDidMount() {
@@ -54,10 +40,10 @@ class App extends React.Component {
     })
   }
 
-  agregarParticipante = (nombre) => {
+  agregarParticipante = (newName) => {
     let exists = false;
     for (let i = 0; i < this.state.participantes.length; i++) {
-      if(this.state.participantes[i].nombre === nombre) {
+      if(this.state.participantes[i].name === newName) {
         exists = true;
       }
     }
@@ -65,23 +51,21 @@ class App extends React.Component {
     if(!exists) {
       const newArray = [...this.state.participantes];
       newArray.push({
-        nombre,
+        name: newName,
         premios: [],
-        yaJugo: false
+        hasPlayed: false
       });
       this.setState({
         participantes: newArray
       });
     } else {
-      alert('💩 Ese nombre ya fue ingresado 🙄');
+      alert('💩 Ese name ya fue ingresado 🙄');
     }
   }
 
   hideShowPrizes = (e) => {
-    if(e.code === 'KeyH') {
-      this.setState({
-        mostrarListaPremios: !this.state.mostrarListaPremios
-      })
+    if(this.state.hasGameStarted && e.code === 'KeyH') {
+      document.querySelector('input[type=checkbox]').click();
     }
   }
 
@@ -96,7 +80,7 @@ class App extends React.Component {
         if(this.state.countdown === 0) {
           clearInterval(interval);
           this.setState({
-            comenzoElJuego: true,
+            hasGameStarted: true,
             participantesPorJugar: [...this.state.participantes]
           })
           setTimeout(() => {
@@ -121,19 +105,19 @@ class App extends React.Component {
       let newState = {};
         
         if(this.state.participantesPorJugar.length !== 0) {
-          // No todos los participantes jugaron en esta vuelta
+          // No todos los participantes jugaron en esta round
           newState = {...{
-            ahoraJuega: playersList[index].nombre,
+            ahoraJuega: playersList[index].name,
             showNewPlayerModal: true,
             participantesPorJugar: filteredArray
           }}
           
         } else {
-          // Todos los participantes jugaron en esta vuelta
-          playersList.forEach(obj => obj.yaJugo = false);
+          // Todos los participantes jugaron en esta round
+          playersList.forEach(obj => obj.hasPlayed = false);
           newState = {...{
-            vuelta: this.state.vuelta + 1,
-            ahoraJuega: playersList[index].nombre,
+            round: this.state.round + 1,
+            ahoraJuega: playersList[index].name,
             showNewPlayerModal: true,
             participantesPorJugar: filteredArray
           }}
@@ -162,11 +146,11 @@ class App extends React.Component {
     const copyOfArray = [...this.state.participantes];
     
     const ganador = copyOfArray.find((obj) => {
-      return obj.nombre === this.state.ahoraJuega;
+      return obj.name === this.state.ahoraJuega;
     });
 
-    // Flip the yaJugo flag to true
-    ganador.yaJugo = true;
+    // Flip the hasPlayed flag to true
+    ganador.hasPlayed = true;
     // Assign that prize to the list of prizes for that player
     ganador.premios.push(premio.description);
 
@@ -175,7 +159,7 @@ class App extends React.Component {
     nuevaListaPremios[premioIndex].picked = true;
 
     this.setState({
-      premioElegido: premio,
+      chosenPrize: premio,
       // Open modal showing what was the prize won
       showPrizeWonModal: true,
       participantes: copyOfArray,
@@ -207,25 +191,26 @@ class App extends React.Component {
           ahoraJuega={this.state.ahoraJuega}
           showPrizeWonModal={this.state.showPrizeWonModal}
           handleHideModal={this.handleHideModal}
-          premioElegido={this.state.premioElegido}
+          chosenPrize={this.state.chosenPrize}
         />
         <Header
-          vuelta={this.state.vuelta}
-          comenzoElJuego={this.state.comenzoElJuego}
+          round={this.state.round}
+          hasGameStarted={this.state.hasGameStarted}
         />
-        { this.state.comenzoElJuego &&
+        { this.state.hasGameStarted &&
           <Toggle showPrizes={this.showPrizes} mostrarPremios={this.state.mostrarListaPremios} />
         }
         <Row>
           <SideNav
             comenzar={this.comenzarJuego}
-            comenzoElJuego={this.state.comenzoElJuego}
+            hasGameStarted={this.state.hasGameStarted}
             participantes={this.state.participantes}
             agregar={this.agregarParticipante}
             ahoraJuega={this.state.ahoraJuega}
+            gameOver={this.state.gameOver}
           />
-          <Col lg={this.state.mostrarListaPremios ? 7 : 9} style={{ paddingTop: '.5rem', textAlign: 'center' }}>
-            { this.state.comenzoElJuego && !this.state.gameOver &&
+          <Col lg='8' style={{ paddingTop: '.5rem', textAlign: 'center' }}>
+            { this.state.hasGameStarted && !this.state.gameOver &&
               <MainContent
                 premios={this.state.premios}
                 elegirPremio={this.elegirPremio}
@@ -233,12 +218,13 @@ class App extends React.Component {
             }
             {
               this.state.gameOver &&
-              <p id='felicitaciones'>😊 ¡Felicitaciones a todos los ganadores! 👏</p>
+              <p id='congratulations'><span aria-label="emoji" role="img">😊</span> ¡Felicitaciones a todos los ganadores! <span aria-label="emoji" role="img">👏</span></p>
             }
           </Col>
           {
-            this.state.mostrarListaPremios &&
-            <ListaPremios premios={this.state.premios} />
+            this.state.mostrarListaPremios
+            ? <PrizeList premios={this.state.premios} />
+            : <Col lg='2' />
           }
         </Row>
       </Container>

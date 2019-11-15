@@ -2,10 +2,10 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import './ModalPrizeWon.scss';
 
-const ModalPrizeWon = ({ showPrizeWonModal, handleHideModal, premioElegido }) => {
+const ModalPrizeWon = ({ showPrizeWonModal, handleHideModal, chosenPrize }) => {
   return (
     <Modal style={{ position: 'relative' }} centered show={showPrizeWonModal} onHide={() => { handleHideModal('showPrizeWonModal') }}>
-      { premioElegido.majorPrize &&
+      { chosenPrize.majorPrize &&
         <>
           <div class="pyro">
             <div class="before"></div>
@@ -16,9 +16,9 @@ const ModalPrizeWon = ({ showPrizeWonModal, handleHideModal, premioElegido }) =>
       }
       <Modal.Header style={{ height: '30vh', justifyContent: 'center' }}>
         <Modal.Title style={{ alignSelf: 'center', textAlign: 'center' }}>
-          ¡Felicitaciones! Te ganaste: <br/>
+          ¡Felicitaciones! Te ganaste <br/>
           <strong style={{ fontSize: '2.25rem' }}>
-            {premioElegido.description}
+            {chosenPrize.description}
           </strong>
         </Modal.Title>
       </Modal.Header>

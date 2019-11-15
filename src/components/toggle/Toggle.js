@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../assets/stylesheets/Toggle.scss';
+import './Toggle.scss';
 
 const Toggle = ({ showPrizes, mostrarPremios }) => {
   return (

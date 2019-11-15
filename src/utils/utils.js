@@ -1,17 +1,3 @@
-// ARRAYS
-export const orden = [
-  'Primera',
-  'Segunda',
-  'Tercera',
-  'Cuarta',
-  'Quinta',
-  'Sexta',
-  'Septima',
-  'Octava',
-  'Novena',
-  'Decima'
-];
-
 // FUNCTIONS
 export const shuffle = (a) => {
   for (let i = a.length - 1; i > 0; i--) {
@@ -30,5 +16,5 @@ export const asignarIds = (listaMezclada) => {
 
 export const filterOutPlayer = (array, playerIndex) => {
   const chosenPlayer = array[playerIndex];
-  return array.filter(p => !(p.nombre === chosenPlayer.nombre));
+  return array.filter(p => !(p.name === chosenPlayer.name));
 };
